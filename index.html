@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Jumpsuit Payments</title>
+    <title>Jumpsuit Payments API</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -218,182 +218,552 @@
         <ul class="search-results"></ul>
       <div id="toc">
       </div>
-        <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/lavkumarv'>Documentation Powered by lav</a></li>
-        </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>This is Jumpsuit Payments gateway APIs. </p>
+<p>This is Jumpsuit Payments gateway APIs.</p>
 
-<p><strong>Version:</strong> 0.1.0 </p>
+<p><strong>Protocol:</strong> https</p>
+
+<p><strong>Format:</strong> JSON</p>
+
+<p><strong>Version:</strong> 0.1.0</p>
 
 <h1 id="authentication">Authentication</h1>
 
-<table><thead>
-<tr>
-<th>apiKey</th>
-<th><em>API Key</em></th>
-</tr>
-</thead><tbody>
-</tbody></table>
+<p>There are two ways to authenticate API calls</p>
+
+<h3 id="use-query-parameters">Use query parameters</h3>
+
+<p>Example:</p>
+
+<p><code class="prettyprint">https://jumpsuitpayments.com/api/transactions/payment_purchase?api_username=[your_user_name]&amp;api_key=[your_api_key]</code></p>
 
 <table><thead>
 <tr>
-<th>apiKey</th>
-<th><em>API Key</em></th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>api_username</td>
+<td>String</td>
+<td>The unique account shared by both API call and Web access</td>
+</tr>
+<tr>
+<td>api_key</td>
+<td>String</td>
+<td>The API specific authentication token assigned to your account. Can be found at web portal</td>
+</tr>
 </tbody></table>
+
+<h3 id="use-http-headers">Use http headers</h3>
+
+<p>Example:</p>
+
+<p><code class="prettyprint">https://jumpsuitpayments.com/api/transactions/payment_purchase</code></p>
+
+<p><code class="prettyprint">X-Api-Username: [your_user_name]</code></p>
+
+<p><code class="prettyprint">X-Api-Key: [your_api_key]</code></p>
 
 <table><thead>
 <tr>
-<th>apiKey</th>
-<th><em>API Key</em></th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
-</tbody></table>
-
-<table><thead>
 <tr>
-<th>apiKey</th>
-<th><em>API Key</em></th>
+<td>X-Api-Username</td>
+<td>String</td>
+<td>The unique account shared by both API call and Web access</td>
 </tr>
-</thead><tbody>
+<tr>
+<td>X-Api-Key</td>
+<td>String</td>
+<td>The API specific authentication token assigned to your account. Can be found at web portal</td>
+</tr>
 </tbody></table>
 
-<h1 id="transactions-payment_purchase">/TRANSACTIONS/PAYMENT_PURCHASE</h1>
+<h1 id="payments">Payments</h1>
 
-<h2 id="post"><strong><em>POST</em></strong></h2>
+<h2 id="purchase">Purchase</h2>
 
+<blockquote>
+<p>Process a payment with a new credit card</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  http://www.minigator.devel:5001/api/transactions/payment_purchase <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: ca25c6dd-8080-420f-0ef7-96f680d4ac38'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: MinigatorAuthenticationToken'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-username: minigator'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "transaction":
+    {
+      "amount_cents": "100",
+      "credit_card_attributes":
+      {
+        "number": "4470330769941000",
+        "first_name": "Bin",
+        "last_name": "Li",
+        "expiration_date": "12/2017",
+        "verification_value": "123"
+      }
+    }
+}'</span>
+</code></pre>
+<blockquote>
+<blockquote>
+<p>The above code returns JSON structured like this:</p>
+</blockquote>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"transaction"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dd26043f-327e-4388-a05e-d5e0c666764c"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"transaction_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"payment_purchase"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"source"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"processed_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-06-24T01:35:37.206Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Process a payment with a new credit card and store it</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  http://www.minigator.devel:5001/api/transactions/payment_purchase <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: ca25c6dd-8080-420f-0ef7-96f680d4ac38'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: MinigatorAuthenticationToken'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-username: minigator'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "transaction":
+    {
+      "amount_cents": "100",
+      "credit_card_attributes":
+      {
+        "number": "4470330769941000",
+        "first_name": "Bin",
+        "last_name": "Li",
+        "expiration_date": "12/2017",
+        "verification_value": "123",
+    "store_me": "true"
+      }
+    }
+}'</span>
+</code></pre>
+<blockquote>
+<blockquote>
+<p>The above code returns JSON structured like this:</p>
+</blockquote>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"transaction"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c8fce3ff-816a-4691-8720-3ca59edada32"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"transaction_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"payment_purchase"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"source"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"processed_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-06-24T01:45:55.250Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"credit_card"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8eefff1c-2de9-446b-90ab-63161efcb0a7"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8eefff1c-2de9-446b-90ab-63161efcb0a7"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"visa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_four"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1000"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"expiration_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-01"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"store_me"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bin"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Li"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address1"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address2"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Process a payment with a new credit card and schedule recurring payments at same time</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># The credit card will be stored automatically for recurring payments purpose</span>
+curl -X POST <span class="se">\</span>
+  <span class="s1">'http://www.minigator.devel:5001/api/transactions/payment_purchase?api_username=minigator&amp;api_key=MinigatorAuthenticationToken'</span> <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: 6747dff6-b8d8-62b8-65cf-3935bf4a3915'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "transaction":
+    {
+      "amount_cents": "300",
+      "credit_card_attributes":
+      {
+        "number": "4470330769941000",
+        "first_name": "Bin",
+        "last_name": "Li",
+        "expiration_date": "2017/12/1",
+        "verification_value": "123"
+      },
+      "scheduler_attributes":
+      {
+        "starts_at": "2017/12/1",
+        "repeat_interval": "daily"      
+      }
+    }
+}'</span>
+</code></pre>
+<blockquote>
+<blockquote>
+<p>The above code returns JSON structured like this:</p>
+</blockquote>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"transaction"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d504a9d0-696f-467f-b8b9-c16f2db9e42f"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"transaction_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"payment_purchase"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"source"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"processed_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-06-24T01:59:17.223Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"scheduler"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2d38706f-59cd-42ac-bf4d-f93e72ec5e8d"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-01"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="s2">"daily"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"credit_card"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0f486731-3c2a-47c8-877e-3b83e2f9ccb4"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0f486731-3c2a-47c8-877e-3b83e2f9ccb4"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"visa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_four"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1000"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"expiration_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-01"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"store_me"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bin"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Li"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address1"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address2"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Process a payment with a stored credit card</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  <span class="s1">'http://www.minigator.devel:5001/api/transactions/payment_purchase?api_username=minigator&amp;api_key=MinigatorAuthenticationToken'</span> <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: 6747dff6-b8d8-62b8-65cf-3935bf4a3915'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "transaction":
+    {
+      "amount_cents": "100",
+      "credit_card_id": "6ba38f63-f10f-40e6-bc50-f672e75e1fd5"
+    }
+}'</span>
+</code></pre>
+<blockquote>
+<blockquote>
+<p>The above code returns JSON structured like this:</p>
+</blockquote>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"transaction"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3272475d-24ad-450f-a577-5e0e830d1d7d"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"transaction_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"payment_purchase"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"source"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"processed_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-06-24T02:02:29.887Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"credit_card"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6ba38f63-f10f-40e6-bc50-f672e75e1fd5"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6ba38f63-f10f-40e6-bc50-f672e75e1fd5"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"visa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_four"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1111"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"expiration_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-01"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"store_me"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bin"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Li"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address1"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address2"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Process a payment with a stored credit card and schedule a recurring payments</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  <span class="s1">'http://www.minigator.devel:5001/api/transactions/payment_purchase?api_username=minigator&amp;api_key=MinigatorAuthenticationToken'</span> <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: 6747dff6-b8d8-62b8-65cf-3935bf4a3915'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "transaction":
+    {
+      "amount_cents": "200",
+      "credit_card_id": "6ba38f63-f10f-40e6-bc50-f672e75e1fd5",
+      "scheduler_attributes":
+      {
+        "starts_at": "2017/12/1",
+        "repeat_interval": "daily"      
+      }
+    }
+}'</span>
+</code></pre>
+<blockquote>
+<blockquote>
+<p>The above code returns JSON structured like this:</p>
+</blockquote>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"transaction"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4c2ee9b8-69e6-40f4-b783-0e337e31bb30"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"transaction_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"payment_purchase"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"source"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"processed_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-06-24T02:05:19.258Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"scheduler"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a1bd8ffd-453b-4912-b5c4-ccd1566dfbc1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-01"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="s2">"daily"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"credit_card"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6ba38f63-f10f-40e6-bc50-f672e75e1fd5"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6ba38f63-f10f-40e6-bc50-f672e75e1fd5"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"visa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_four"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1111"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"expiration_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-01"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"store_me"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bin"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Li"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address1"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address2"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 <p><strong>Summary:</strong> Processing a new payment</p>
 
 <p><strong>Description:</strong> Processing a payment with new credit card or stored card with option to add a scheduler for recurring payment.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">***POST*** /transactions/payment_purchase</code> </p>
+<p><code class="prettyprint">POST /transactions/payment_purchase</code></p>
 
-<p><strong>Parameters</strong></p>
+<h1 id="schedulers">Schedulers</h1>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Located in</th>
-<th>Description</th>
-<th>Required</th>
-<th>Type</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Success</td>
-<td>body</td>
-<td>process payment use new credit card</td>
-<td>Yes</td>
-<td></td>
-</tr>
-</tbody></table>
+<h2 id="create">Create</h2>
 
-<p><strong>Responses</strong></p>
-
-<table><thead>
-<tr>
-<th>Code</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>201</td>
-<td>Success</td>
-</tr>
-<tr>
-<td>401</td>
-<td>failure</td>
-</tr>
-<tr>
-<td>default</td>
-<td>failure</td>
-</tr>
-<tr>
-<td>422 (Invalid card)</td>
-<td>failure</td>
-</tr>
-<tr>
-<td>422 (Invalid Amount)</td>
-<td>failure</td>
-</tr>
-</tbody></table>
-
-<h1 id="schedulers">/SCHEDULERS</h1>
-
-<h2 id="post"><strong><em>POST</em></strong></h2>
-
+<blockquote>
+<p>Create a recurring schedule using a new credit card</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  <span class="s1">'http://www.minigator.devel:5001/api/schedulers?api_username=minigator&amp;api_key=MinigatorAuthenticationToken'</span> <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: a5617447-c218-5105-70d9-20163b21faef'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "scheduler":
+    {
+        "amount_cents": "800",
+        "starts_at": "2017/12/1",
+        "repeat_interval": "daily",
+        "credit_card_attributes":
+        {
+            "number": "4470330769941000",
+            "first_name": "Bin",
+            "last_name": "Li",
+            "expiration_date": "2017/12/1",
+            "verification_value": "123"
+        }
+    }
+}'</span>
+</code></pre>
+<blockquote>
+<blockquote>
+<p>The above code returns JSON structured like this:</p>
+</blockquote>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"scheduler"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6892fb8a-d583-40d9-aacd-263a28eb5506"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-01"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="s2">"daily"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">800</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"credit_card"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0c307f4-6d1b-4d12-8fec-b6c4feef2dd0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0c307f4-6d1b-4d12-8fec-b6c4feef2dd0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"visa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_four"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1000"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"expiration_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-01"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"store_me"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bin"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Li"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address1"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address2"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Create a recurring schedule using a stored credit card</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  <span class="s1">'http://www.minigator.devel:5001/api/schedulers?api_username=minigator&amp;api_key=MinigatorAuthenticationToken'</span> <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: cd426235-3e80-2ff2-e454-46a6c9544167'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "scheduler":
+    {
+        "amount_cents": "11",
+        "starts_at": "2017-07-26",
+        "repeat_interval": "daily",
+        "credit_card_id": "15d30739-e191-430f-af75-532aea0a1739"
+    }
+}'</span>
+</code></pre>
+<blockquote>
+<blockquote>
+<p>The above code returns JSON structured like this:</p>
+</blockquote>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"scheduler"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d617978a-95e2-4965-bdcf-363b9c8c704c"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-26"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="s2">"daily"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"credit_card"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15d30739-e191-430f-af75-532aea0a1739"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15d30739-e191-430f-af75-532aea0a1739"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"visa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_four"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1000"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"expiration_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-01"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"store_me"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bin"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Li"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address1"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address2"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 <p><strong>Summary:</strong> Create new recurring scheduler</p>
 
 <p><strong>Description:</strong> Create recurring payment scheduler with credit card information.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">***POST*** /schedulers</code> </p>
-
-<p><strong>Parameters</strong></p>
-
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Located in</th>
-<th>Description</th>
-<th>Required</th>
-<th>Type</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Success 1</td>
-<td>body</td>
-<td>create scheduler with new credit card</td>
-<td>Yes</td>
-<td></td>
-</tr>
-</tbody></table>
-
-<p><strong>Responses</strong></p>
-
-<table><thead>
-<tr>
-<th>Code</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>201</td>
-<td>Success</td>
-</tr>
-<tr>
-<td>default</td>
-<td>failure</td>
-</tr>
-<tr>
-<td>500 (Empty input)</td>
-<td>failure</td>
-</tr>
-<tr>
-<td>422 (Invalid data)</td>
-<td>failure</td>
-</tr>
-</tbody></table>
-
-<!-- Converted with the swagger-to-slate https://github.com/lavkumarv/swagger-to-slate -->
+<p><code class="prettyprint">POST /schedulers</code></p>
 
           <h1 id="errors">Errors</h1>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&lsquo;s frontmatter. Files are included in the order listed.</aside>
+<p>The Jumpsuit Payments API uses the following error codes:</p>
 
-<p>The Kittn API uses the following error codes:</p>
-
+<blockquote>
+<p>Sample - Error with HTTP code: 500</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"divided by 0"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Sample - Error with HTTP code: 401</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"You need to provide correct credentials before continuing."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Sample - Error with HTTP code: 403</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"Not authorized to perform requested action."</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Sample - Error with HTTP code: 404</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"Couldn't find Scheduler with ... "</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Sample - Error with HTTP code: 422</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"must be greater than 0"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"'afdsaffdas' is not a valid repeat_interval"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 <table><thead>
 <tr>
 <th>Error Code</th>
@@ -402,47 +772,27 @@
 </thead><tbody>
 <tr>
 <td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
+<td>Bad Request &ndash; Your request is not valid</td>
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
+<td>Unauthorized &ndash; Your API key is not valid</td>
 </tr>
 <tr>
 <td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+<td>Forbidden &ndash; The resource requested is hidden for administrators only</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
+<td>Not Found &ndash; The specified resource could not be found</td>
 </tr>
 <tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
+<td>422</td>
+<td>Unprocessable Entity - Not allow to process this resource</td>
 </tr>
 <tr>
 <td>500</td>
 <td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarily offline for maintenance. Please try again later.</td>
 </tr>
 </tbody></table>
 
