@@ -190,6 +190,7 @@ curl -X POST \
 	  {
 		"starts_at": "2017/12/1",
 		"repeat_interval": "daily"	  	
+		"max_repeat_count": "10"	  	
 	  }
 	}
 }'
