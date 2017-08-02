@@ -18,7 +18,7 @@ search: true
 
 # Introduction
 
-This is Jumpsuit Payments gateway APIs.
+These are Jumpsuit Payments gateway APIs.
 
 **Protocol:** https
 
