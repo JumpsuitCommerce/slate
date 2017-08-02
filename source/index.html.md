@@ -162,7 +162,7 @@ curl -X POST \
             "phone": null
         }
     }
-}
+e
 ```
 
 > Process a payment with a new credit card and schedule recurring payments at same time
@@ -190,7 +190,7 @@ curl -X POST \
 	  {
 		"starts_at": "2017/12/1",
 		"repeat_interval": "daily"	  	
-		"max_repeat_count": "10"	  	
+		"max_repeat_count": "11"	  	
 	  }
 	}
 }'
